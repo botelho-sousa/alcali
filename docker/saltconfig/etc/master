@@ -181,7 +181,7 @@ mysql.port: 3306
 
 # Enable auto_accept, this setting will automatically accept all incoming
 # public keys from the minions. Note that this is insecure.
-#auto_accept: True
+auto_accept: True
 
 # Time in minutes that a incoming public key with a matching name found in
 # pki_dir/minion_autosign/keyid is automatically accepted. Expired autosign keys
@@ -235,6 +235,15 @@ mysql.port: 3306
 #  pam:
 #    fred:
 #      - test.*
+# client_acl:
+#   admin:
+#     - .*
+
+permissive_acl: True
+keep_acl_in_token: True
+
+
+
 external_auth:
   rest:
     ^url: http://web:8000/api/token/verify/
@@ -249,10 +258,17 @@ external_auth:
           - state.*
       - 'G@os:RedHat':
           - kmod.*
-    admin:
       - .*
       - '@runner'
       - '@wheel'
+      - '@jobs'
+    'admin':
+      - .*
+      - '@local'
+      - '@runner'
+      - '@wheel'
+      - '@jobs'
+
   alcali:
     apiuser:
       - test.ping
@@ -267,8 +283,10 @@ external_auth:
         - kmod.*
     admin:
       - .*
+      - '@local'
       - '@runner'
       - '@wheel'
+      - '@jobs'
 
 # Time (in seconds) for a newly generated token to live. Default: 12 hours
 #token_expire: 43200
@@ -691,3 +709,14 @@ rest_cherrypy:
   debug: True
   ssl_crt: /etc/pki/tls/certs/localhost.crt
   ssl_key: /etc/pki/tls/certs/localhost.key
+
+netapi_enable_clients:
+  - local
+  - local_async
+  - local_batch
+  - local_subset
+  - runner
+  - runner_async
+  - ssh
+  - wheel
+  - wheel_async

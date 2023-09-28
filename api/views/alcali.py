@@ -538,7 +538,8 @@ def verify(request):
         except User.DoesNotExist:
             return HttpResponse("Unauthorized", status=401)
         if request.POST.get("password") == user.user_settings.token:
-            return Response({request.POST.get("username"): None})
+            result = []#{request.POST.get("username"): { '.*': ['.*']}} # TODO: get user's ACLs from django storage
+            return Response(result)
         return HttpResponse("Unauthorized", status=401)
 
 
@@ -552,3 +553,15 @@ def social(request):
             "redirect_uri": settings.SOCIAL_AUTH_REDIRECT_URI,
         }
     )
+
+
+from api.models import Device, DeviceGroup
+from api.serializers import DeviceSerializer, DeviceGroupSerializer
+
+class DeviceViewSet(viewsets.ModelViewSet):
+    queryset = Device.objects.all()
+    serializer_class = DeviceSerializer
+
+class DeviceGroupViewSet(viewsets.ModelViewSet):
+    queryset = DeviceGroup.objects.all()
+    serializer_class = DeviceGroupSerializer
