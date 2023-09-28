@@ -33,10 +33,6 @@ WORKDIR /opt/alcali/code
 RUN pip install --user -U setuptools
 
 # Install project
-RUN pip install --user -e .[dev,ldap,social] 
-# ENV MYSQLCLIENT_LDFLAGS=$(pkg-config --libs mysqlclient)
-# ENV MYSQLCLIENT_CFLAGS=$(pkg-config --cflags mysqlclient)
-
-RUN pip install --user mysqlclient
+RUN pip install --user -e .[dev,ldap,social] mysqlclient psycopg2
 
 ENTRYPOINT ["/opt/alcali/code/docker/utils/entrypoint-dev.sh"]
