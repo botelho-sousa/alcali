@@ -244,9 +244,22 @@ keep_acl_in_token: True
 
 
 
+# client_acl:
+#   admin:
+#     - .*
+
+
+eauth_acl_module: alcali
+keep_acl_in_token: true
+
 external_auth:
   rest:
     ^url: http://web:8000/api/token/verify/
+    admin:
+      - '.*'
+      - '@runner'
+      - '@wheel'
+      - '@jobs'
     apiuser:
       - test.ping
       - minion\*:
@@ -258,7 +271,9 @@ external_auth:
           - state.*
       - 'G@os:RedHat':
           - kmod.*
-      - .*
+  alcali:
+      - '.*'
+      - '@local'
       - '@runner'
       - '@wheel'
       - '@jobs'
@@ -269,7 +284,7 @@ external_auth:
       - '@wheel'
       - '@jobs'
 
-  alcali:
+      - '@jobs'
     apiuser:
       - test.ping
       - minion\*:

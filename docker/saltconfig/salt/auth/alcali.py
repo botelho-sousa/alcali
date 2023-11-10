@@ -71,6 +71,7 @@ def _get_options():
 
     if HAS_MYSQL:
         for k, v in defaults.items():
+        for k, v in defaults.items():
             try:
                 _options[k] = __opts__["{}.{}".format("mysql", k)]
             except KeyError:
@@ -81,12 +82,15 @@ def _get_options():
         defaults["passwd"] = "salt"
         defaults["port"] = 5432
         for k, v in defaults.items():
+        for k, v in defaults.items():
             try:
                 _options[k] = __opts__["{}.{}".format("returner.postgres", k)]
             except KeyError:
                 _options[k] = v
 
     # post processing
+    for k, v in defaults.items():
+        if isinstance(v, str) and v.lower() == "none":
     for k, v in _options.items():
         if isinstance(v, str) and v.lower() == "none":
             # Ensure 'None' is rendered as None
